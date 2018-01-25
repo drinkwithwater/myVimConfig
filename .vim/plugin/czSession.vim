@@ -53,14 +53,11 @@ endfunction
 " make tag and open tag file below
 command! -n=0 -bar TAG call s:VsctagsRight()
 function! s:VsctagsRight()
-	set splitbelow
 	call system("ctags -f ~/.vimtmp/tags --sort=no ".expand('%:p'))
-	sp +8 ~/.vimtmp/tags
-	resize 10
-	set nosplitbelow
+	botright 10 split ~/.vimtmp/tags
 	nnoremap <buffer><silent>o <C-]><C-w>w:q<CR>
 	nnoremap <buffer><silent>t <C-w><C-]><C-w>T
-	set nomodifiable
+	setlocal nomodifiable
 endfunction
 
 " git diff in local
@@ -74,20 +71,6 @@ function! s:Vsgitdiff()
 	tabe ~/.vimtmp/DIFF_TEMP
 endfunction
 
-"cz tag -- not good -- use MRU instead
-command! -n=0 -bar CZTAGOpen call s:OpenFileByLine()
-function! s:OpenFileByLine()
-	let line = split(getline('.'))
-	if len(l:line) <2
-		echo "wrong format"
-		return
-	endif
-	if filereadable(l:line[1])
-		exec "tabe ".l:line[1]
-	else
-		echo "file not found"
-	end
-endfunction
 
 " auto input setter & getter
 function! s:defaultClass()
@@ -177,7 +160,42 @@ function! s:GetMRUFile()
 	return l:existFiles
 endfunction
 
+"
+function! OpenFileByLine()
+	let line=getline('.')
+	if filereadable(l:line)
+		exec "tabe ".l:line
+	else
+		echo "file not found"
+	end
+endfunction
+
+" find file and open list below
+function! s:searchFile(fileName, directory)
+	if a:directory==""
+		call system("find . |grep ".a:fileName." > ~/.vimtmp/search_list")
+	else
+		call system("find ".a:directory." |grep ".a:fileName." > ~/.vimtmp/search_list")
+	endif
+	botright 10 split ~/.vimtmp/search_list
+	nnoremap <buffer><silent>t :call OpenFileByLine()<CR>
+	setlocal nomodifiable
+endfunction
+function! s:searchFileInGit(fileName)
+	let beforePath = getcwd()
+	while 1
+		let curPath = getcwd()
+		if isdirectory(l:curPath."/.git")
+			s:searchFile(fileName, curPath)
+			break
+		endif
+	endwhile
+	exec "cd ".beforePath
+endfunction
+command! -nargs=1 -bar SearchInGit call s:searchFileInGit(<q-args>)
+
 " -----------------------------------------------------------------{{{ [[[
+" open lastest openfile
 function! OpenLastClose()
 	let openFiles=s:GetAllBufferName()
 	let closeFiles=s:GetMRUFile()
@@ -196,6 +214,7 @@ function! OpenLastClose()
 	endfor
 endfunction
 
+" search filename and open in mru list
 function! OpenWithSingleFileName(fileName)
 	let mruFiles=s:GetMRUFile()
 	if a:fileName == ''
@@ -232,6 +251,7 @@ endfunction
 
 nmap t :Tabe<space>
 nmap <s-t> :Tabe<CR>
+nmap s :SearchInGit<space>
 
 command! -nargs=? -complete=customlist,s:MRU_SingleComplete Tabe
             \ call OpenWithSingleFileName(<q-args>)
