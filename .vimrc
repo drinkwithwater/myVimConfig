@@ -1,6 +1,6 @@
 "
 " $File: .vimrc
-" $Date: 四 4月 12 17:24:38 2018 +0800
+" $Date: 四 4月 12 17:28:54 2018 +0800
 " $Author: Jiakai <jia.kai66@******>
 " Adapted by Zhou Xinyu <zxytim@******>
 " Adapted by cz
@@ -101,7 +101,7 @@ endfunction
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 "set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim/
-call vundle#rc()
+"call vundle#rc()
 
 " let Vundle manage Vundle
 " required!
@@ -112,7 +112,7 @@ call vundle#rc()
 "Bundle 'vim-coffee-script'
 "Bundle 'vim-pandoc/vim-pandoc'
 "Bundle 'Lokaltog/powerline'
-Bundle 'nerdtree'
+"Bundle 'nerdtree'
 
 "let g:pandoc_no_folding = 1
 
