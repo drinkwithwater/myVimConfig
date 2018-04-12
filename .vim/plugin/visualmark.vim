@@ -32,14 +32,12 @@ endif
 nnoremap <silent> <script> <Plug>Vm_toggle_sign	:call Vm_toggle_sign()<cr>
 
 if !hasmapto('<Plug>Vm_goto_next_sign')
-  map <unique> <c-j> <Plug>Vm_goto_next_sign :silent! normal zO<CR>
   nmap <unique> <c-n> <Plug>Vm_goto_next_sign :silent! normal zO<CR>
 endif
 nnoremap <silent> <script> <Plug>Vm_goto_next_sign	:call Vm_goto_next_sign()<cr>
 
 if !hasmapto('<Plug>Vm_goto_prev_sign')
-  map <unique> <c-k> <Plug>Vm_goto_prev_sign :silent! normal zO<CR>
-  nmap <unique> <c-p> <Plug>Vm_goto_prev_sign :silent! normal zO<CR>
+  nmap <unique> <c-p> <Plug>Vm_goto_prev_sign<CR>
 endif
 nnoremap <silent> <script> <Plug>Vm_goto_prev_sign	:call Vm_goto_prev_sign()<cr>
 

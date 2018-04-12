@@ -188,6 +188,10 @@ function! s:searchFileInGit(fileName)
 		if isdirectory(l:curPath."/.git")
 			s:searchFile(fileName, curPath)
 			break
+		elseif l:curPath=="/"
+			break
+		else
+			cd ..
 		endif
 	endwhile
 	exec "cd ".beforePath

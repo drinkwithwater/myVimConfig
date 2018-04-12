@@ -1,6 +1,6 @@
 "
 " $File: .vimrc
-" $Date: 一 1月 22 18:06:39 2018 +0800
+" $Date: 四 4月 12 17:24:38 2018 +0800
 " $Author: Jiakai <jia.kai66@******>
 " Adapted by Zhou Xinyu <zxytim@******>
 " Adapted by cz
@@ -76,6 +76,10 @@ set foldminlines=1
 
 autocmd Filetype lua setlocal foldmethod=indent
 autocmd Filetype lua setlocal foldlevel=0
+
+"autocmd Filetype lua setlocal foldmethod=expr
+"autocmd Filetype lua setlocal foldexpr=(getline(v:lnum)=~'^$')?-1:((indent(v:lnum-1)<indent(v:lnum))?('>'.indent(v:lnum)):indent(v:lnum))
+
 autocmd BufWinEnter *.lua silent! :foldopen!
 
 "}"
@@ -616,13 +620,26 @@ endif
 nnoremap zo zO
 nnoremap zz zA
 
+nnoremap zh za
+nnoremap zl zo
+
+nnoremap <c-j> zj
+nnoremap <c-k> zk
+
 
 
 "hi Folded guibg=black guifg=grey40 ctermfg=darkgrey ctermbg=darkgrey
 hi Folded ctermfg=darkblue  ctermbg=230
 
+
 " execute pathogen#infect()
 "python from powerline.vim import setup as powerline_setup
 "python powerline_setup()
 "python del powerline_setup
+"
+"au BufNewFile,BufRead *.luast setlocal syntax=luast
+"au BufNewFile,BufRead *.luast setlocal foldmethod=indent
+"au BufNewFile,BufRead *.luast setlocal foldlevel=0
+
+au BufNewFile,BufRead *.sproto setlocal syntax=python
 
